@@ -12,6 +12,7 @@
 
     .info__back {
         display: none;
+        margin: 0;
 
         @include bp(48em) {
             display: block;

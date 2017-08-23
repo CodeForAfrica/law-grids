@@ -141,28 +141,30 @@ class LawChart {
 
     setupEventHandlers() {
         if (window.matchMedia('(min-width: 48em)').matches) {
-            this.$cells.on('mouseover', (e) => {
+            this.mobile = false 
+            
+            this.$cells.on('mouseover.law', (e) => {
                 const $cell = $(e.currentTarget)
                 const index = $cell.index()
                 this.$headerCells.filter((i) => i === index).addClass('highlight')
                 this.showInfo($cell)
             })
 
-            this.$cells.on('mouseout', () => {
+            this.$cells.on('mouseout.law', () => {
                 this.$headerCells.removeClass('highlight')
                 this.hideInfo()
             })
         } else {
             this.mobile = true
 
-            this.$cells.on('click', (e) => {
+            this.$cells.on('click.law', (e) => {
                 const $cell = $(e.currentTarget)
                 const index = $cell.index()
                 this.$headerCells.filter((i) => i === index).addClass('highlight')
                 this.showInfo($cell)
             })
 
-            this.$container.on('click', '.info__back', () => {
+            this.$container.on('click.law', '.info__back', () => {
                 this.$headerCells.removeClass('highlight')
                 this.hideInfo()
             })
@@ -171,8 +173,8 @@ class LawChart {
 
     resize () {
         if ((window.matchMedia('(min-width: 48em)').matches && this.mobile) || (!window.matchMedia('(min-width: 48em)').matches && !this.mobile)) {
-            this.$cells.off('click mouseover mouseout')
-            this.$infoBack.off('click')
+            this.$cells.off('click.law mouseover.law mouseout.law')
+            this.$container.off('click.law', '.info__back')
             this.setupEventHandlers()
         }
     }

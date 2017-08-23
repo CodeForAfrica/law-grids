@@ -112,44 +112,12 @@ section {
 body {
     -webkit-tap-highlight-color: transparent;
     color: $text;
-    font-size: $font-size;
-    font-weight: $font-weight;
-    line-height: $line-height;
     min-width: rem($min-width);
-}
-
-ul, ol {
-    list-style: none;
-}
-
-blockquote,
-q {
-    quotes: none;
-
-    &:before,
-    &:after {
-        content: '';
-        content: none;
-    }
 }
 
 table {
     border-collapse: collapse;
     border-spacing: 0;
-}
-
-h1 {
-    font-size: rem(24);
-    line-height: rem(30);
-}
-
-h2 {
-    font-size: rem(18);
-    line-height: rem(30);
-}
-
-h1, h2, h3, h4, h5, h6 {
-    color: $text;
 }
 
 a,
