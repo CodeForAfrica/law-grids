@@ -52,7 +52,16 @@
     }
 
     .info__entry {
+        opacity: 0.5;
         overflow: hidden;
+
+        &.active {
+            opacity: 1;
+        }
+
+        @include bp(48em) {
+            opacity: 1;
+        }
     }
 
     .info__color {
@@ -67,5 +76,9 @@
         line-height: rem(20);
         margin-bottom: rem(10);
         margin-left: rem(45);
+    }
+
+    .info__highlight {
+        color: $text-alt;
     }
 }

@@ -143,14 +143,12 @@ class LawChart {
         if (window.matchMedia('(min-width: 48em)').matches) {
             this.$cells.on('mouseover', (e) => {
                 const $cell = $(e.currentTarget)
-                $cell.siblings('.table__data-cell').addClass('fade')
                 const index = $cell.index()
                 this.$headerCells.filter((i) => i === index).addClass('highlight')
-                this.showInfo($cell.parents('.table__row'))
+                this.showInfo($cell)
             })
 
             this.$cells.on('mouseout', () => {
-                this.$cells.removeClass('fade')
                 this.$headerCells.removeClass('highlight')
                 this.hideInfo()
             })
@@ -159,14 +157,12 @@ class LawChart {
 
             this.$cells.on('click', (e) => {
                 const $cell = $(e.currentTarget)
-                $cell.siblings('.table__data-cell').addClass('fade')
                 const index = $cell.index()
                 this.$headerCells.filter((i) => i === index).addClass('highlight')
-                this.showInfo($cell.parents('.table__row'))
+                this.showInfo($cell)
             })
 
             this.$container.on('click', '.info__back', () => {
-                this.$cells.removeClass('fade')
                 this.$headerCells.removeClass('highlight')
                 this.hideInfo()
             })
@@ -181,7 +177,9 @@ class LawChart {
         }
     }
 
-    showInfo($row) {
+    showInfo($cell) {
+        const $row = $cell.parents('.table__row')
+        const index = $cell.index()
         const country = $row.data('country')
         const data = this.matrix.filter((row) => row.country === country)[0]
         const annotations = this.annotations.filter((row) => row.country === country)[0]
@@ -192,12 +190,14 @@ class LawChart {
                 <a class="info__back"><span class="info__back-img"></span><span class="visuallyhidden">Back</span></a>
                 <div class="info__content">
                     <h2 class="info__title">${country}</h2>
-                    ${this.categories.map(category => 
-                        `<div class="info__entry"><span class="info__color" style="background: ${
-                            data[category] === '0.5*' ?
+                    ${this.categories.map((category, i) => 
+                        `<div class="info__entry ${i === index - 1? 'active' : ''}">
+                            <span class="info__color" style="background: ${data[category] === '0.5*' ?
                                 `repeating-linear-gradient(-45deg,${this.stripeColour},${this.stripeColour} 10px,transparent 10px,transparent 20px)` :
                                 this.colors.filter(color => parseFloat(color.value) === parseFloat(data[category]))[0].colour
-                        }"></span><span class="info__text">${annotations[category].replace(locationString, country).replace(categoryString, category)}</span></div>`
+                            }"></span>
+                            <span class="info__text"><span class="info__highlight">${category.toTitleCase()}</span> ${annotations[category].replace(locationString, country).replace(categoryString, category)}</span>
+                        </div>`
                     ).join('')}
                 </div>
             </div>

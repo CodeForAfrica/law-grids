@@ -52,7 +52,6 @@
         display: block;
         height: rem(50);
         margin: 0 rem(1);
-        transition: opacity 350ms;
         width: rem(58);
 
         @include bp(48em) {
@@ -70,12 +69,6 @@
 
         @include bp(48em) {
             width: rem(22);
-        }
-
-        &.fade {
-            .table__color-cell {
-                opacity: 0.5;    
-            }
         }
 
         &:nth-child(2) {
