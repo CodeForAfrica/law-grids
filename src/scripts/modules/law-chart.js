@@ -1,5 +1,6 @@
 import * as d3                          from 'd3'
 import $                                from 'jquery'
+import throttle                         from '../utils/throttle'
 import '../utils/helpers'
 
 class LawChart {
@@ -12,6 +13,10 @@ class LawChart {
         this.stripeColour = null
         this.$container = $container
         this.$rhs = null
+        this.$cells = null
+        this.$infoBack = null
+        this.$headerCells = null
+        this.mobile = false
     }
 
     init() {
@@ -25,13 +30,18 @@ class LawChart {
             .defer(d3.csv, '/data/colors.csv')
             .await((error, annotations, matrix, colors) => {
                 if (error) {
-                    console.error('Oh dear, something went wrong: ' + error)
+                    // console.error('Oh dear, something went wrong: ' + error)
                 } else {
                     this.annotations = annotations
                     this.matrix = matrix
                     this.colors = colors
                     this.categories = Object.keys(matrix[0]).slice(1)
                     this.render()
+
+                    throttle('resize', 'resize.law')
+                    $(window).on('resize.law', () => {
+                        this.resize()
+                    })
                 }
             })
     }
@@ -122,25 +132,45 @@ class LawChart {
 
         this.$container.find('table').css('margin-top', `${Math.sqrt(width * width - height * height)}px`)
 
-        const $cells = this.$container.find('.table__data-cell')
-        const $headerCells = this.$container.find('th')
+        this.$cells = this.$container.find('.table__data-cell')
+        this.$infoBack = this.$container.find('.info__back')
+        this.$headerCells = this.$container.find('th')
 
-        $cells.on('mouseover', (e) => {
+        this.setupEventHandlers()
+    }
+
+    setupEventHandlers() {
+        this.$cells.on('mouseover', (e) => {
             const $cell = $(e.currentTarget)
             $cell.siblings('.table__data-cell').addClass('fade')
             const index = $cell.index()
-            $headerCells.filter((i) => i === index).addClass('highlight')
+            this.$headerCells.filter((i) => i === index).addClass('highlight')
             this.showInfo($cell.parents('.table__row'))
 
         })
 
-        $cells.on('mouseout', (e) => {
-            const $cell = $(e.currentTarget)
-            $cell.siblings('.table__data-cell').removeClass('fade')
-            const index = $cell.index()
-            $headerCells.filter((i) => i === index).removeClass('highlight')
-            this.hideInfo()
-        })
+        if (window.matchMedia('(min-width: 48em)').matches) {
+            this.$cells.on('mouseout', () => {
+                this.$cells.removeClass('fade')
+                this.$headerCells.removeClass('highlight')
+                this.hideInfo()
+            })
+        } else {
+            this.mobile = true
+            this.$container.on('click', '.info__back', () => {
+                this.$cells.removeClass('fade')
+                this.$headerCells.removeClass('highlight')
+                this.hideInfo()
+            })
+        }
+    }
+
+    resize () {
+        if ((window.matchMedia('(min-width: 48em)').matches && this.mobile) || (!window.matchMedia('(min-width: 48em)').matches && !this.mobile)) {
+            this.$cells.off('mouseover mouseout')
+            this.$infoBack.off('click')
+            this.setupEventHandlers()
+        }
     }
 
     showInfo($row) {
@@ -150,14 +180,19 @@ class LawChart {
         const locationString = '<location>'
         const categoryString = '<category>'
         const info = `
-            <h2 class="info__title">${country}</h2>
-            ${this.categories.map(category => 
-                `<div class="info__entry"><span class="info__color" style="background: ${
-                    data[category] === '0.5*' ?
-                        `repeating-linear-gradient(-45deg,${this.stripeColour},${this.stripeColour} 10px,transparent 10px,transparent 20px)` :
-                        this.colors.filter(color => parseFloat(color.value) === parseFloat(data[category]))[0].colour
-                }"></span><span class="info__text">${annotations[category].replace(locationString, country).replace(categoryString, category)}</span></div>`
-            ).join('')}
+            <div class="info__wrapper">
+                <a class="info__back"><img src="img/arrow.svg" /><span class="visuallyhidden">Back</span></a>
+                <div class="info__content">
+                    <h2 class="info__title">${country}</h2>
+                    ${this.categories.map(category => 
+                        `<div class="info__entry"><span class="info__color" style="background: ${
+                            data[category] === '0.5*' ?
+                                `repeating-linear-gradient(-45deg,${this.stripeColour},${this.stripeColour} 10px,transparent 10px,transparent 20px)` :
+                                this.colors.filter(color => parseFloat(color.value) === parseFloat(data[category]))[0].colour
+                        }"></span><span class="info__text">${annotations[category].replace(locationString, country).replace(categoryString, category)}</span></div>`
+                    ).join('')}
+                </div>
+            </div>
         `
 
         this.$info.html(info)

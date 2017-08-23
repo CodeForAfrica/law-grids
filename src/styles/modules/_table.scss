@@ -4,7 +4,7 @@
         border-collapse: separate;
         color: $text;
         float: left;
-        margin: rem(100) rem(100) 0 0;
+        margin: rem(100) rem(100) rem(50) 0;
 
         @include bp(48em) {
             float: none;

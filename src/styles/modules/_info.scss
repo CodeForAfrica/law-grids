@@ -1,6 +1,41 @@
 .law {
-    .info {
+    .info__wrapper {
+        @include bp(48em) {
+            background: white;
+            bottom: 0;
+            left: 0;
+            padding: rem(20);
+            position: absolute;
+            top: 0;
+        }
+    }
 
+    .info__back {
+        display: none;
+
+        @include bp(48em) {
+            display: block;
+            float: left;
+
+            &:hover,
+            &:active,
+            &:focus {
+                cursor: pointer;
+            }
+
+            img {
+                display: block;
+                height: rem(10);
+                margin: rem(7) rem(10) rem(7) 0;
+                width: rem(16);
+            }
+        }
+    }
+
+    .info__content {
+        @include bp(48em) {
+            margin-left: rem(36);
+        }
     }
 
     .info__title {
