@@ -140,16 +140,15 @@ class LawChart {
     }
 
     setupEventHandlers() {
-        this.$cells.on('mouseover', (e) => {
-            const $cell = $(e.currentTarget)
-            $cell.siblings('.table__data-cell').addClass('fade')
-            const index = $cell.index()
-            this.$headerCells.filter((i) => i === index).addClass('highlight')
-            this.showInfo($cell.parents('.table__row'))
-
-        })
-
         if (window.matchMedia('(min-width: 48em)').matches) {
+            this.$cells.on('mouseover', (e) => {
+                const $cell = $(e.currentTarget)
+                $cell.siblings('.table__data-cell').addClass('fade')
+                const index = $cell.index()
+                this.$headerCells.filter((i) => i === index).addClass('highlight')
+                this.showInfo($cell.parents('.table__row'))
+            })
+
             this.$cells.on('mouseout', () => {
                 this.$cells.removeClass('fade')
                 this.$headerCells.removeClass('highlight')
@@ -157,6 +156,15 @@ class LawChart {
             })
         } else {
             this.mobile = true
+
+            this.$cells.on('click', (e) => {
+                const $cell = $(e.currentTarget)
+                $cell.siblings('.table__data-cell').addClass('fade')
+                const index = $cell.index()
+                this.$headerCells.filter((i) => i === index).addClass('highlight')
+                this.showInfo($cell.parents('.table__row'))
+            })
+
             this.$container.on('click', '.info__back', () => {
                 this.$cells.removeClass('fade')
                 this.$headerCells.removeClass('highlight')
@@ -167,7 +175,7 @@ class LawChart {
 
     resize () {
         if ((window.matchMedia('(min-width: 48em)').matches && this.mobile) || (!window.matchMedia('(min-width: 48em)').matches && !this.mobile)) {
-            this.$cells.off('mouseover mouseout')
+            this.$cells.off('click mouseover mouseout')
             this.$infoBack.off('click')
             this.setupEventHandlers()
         }
@@ -181,7 +189,7 @@ class LawChart {
         const categoryString = '<category>'
         const info = `
             <div class="info__wrapper">
-                <a class="info__back"><img src="img/arrow.svg" /><span class="visuallyhidden">Back</span></a>
+                <a class="info__back"><span class="info__back-img"></span><span class="visuallyhidden">Back</span></a>
                 <div class="info__content">
                     <h2 class="info__title">${country}</h2>
                     ${this.categories.map(category => 

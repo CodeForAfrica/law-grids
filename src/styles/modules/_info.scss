@@ -23,10 +23,12 @@
                 cursor: pointer;
             }
 
-            img {
+            .info__back-img {
+                background: url('../../img/arrow.svg');
+                background-repeat: no-repeat;
                 display: block;
                 height: rem(10);
-                margin: rem(7) rem(10) rem(7) 0;
+                margin: rem(11) rem(10) rem(11) 0;
                 width: rem(16);
             }
         }
@@ -45,6 +47,7 @@
 
         @include bp(48em) {
             font-size: rem(28);
+            line-height: rem(32);
         }
     }
 
