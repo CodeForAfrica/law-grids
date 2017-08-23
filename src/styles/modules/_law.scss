@@ -1,0 +1,16 @@
+.law {
+    font-size: rem(12);
+    overflow: hidden;
+    padding: rem(20);
+}
+
+.law__title {
+    color: $text-alt;
+    font-size: rem(37);
+    margin-bottom: rem(55);
+    
+    @include bp(48em) {
+        font-size: rem(20);
+        margin-bottom: rem(35);
+    }
+}

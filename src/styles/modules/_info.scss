@@ -1,0 +1,33 @@
+.law {
+    .info {
+
+    }
+
+    .info__title {
+        color: $text-alt;
+        font-size: rem(32);
+        margin-bottom: rem(25);
+
+        @include bp(48em) {
+            font-size: rem(28);
+        }
+    }
+
+    .info__entry {
+        overflow: hidden;
+    }
+
+    .info__color {
+        float: left;
+        height: rem(20);
+        margin-bottom: rem(26);
+        width: rem(35);
+    }
+
+    .info__text {
+        display: block;
+        line-height: rem(20);
+        margin-bottom: rem(10);
+        margin-left: rem(45);
+    }
+}

@@ -1,0 +1,43 @@
+.law {
+    .rhs {
+        overflow: hidden;
+    }
+
+    .legend {
+        margin-bottom: rem(45);
+    }
+
+    .legend__title {
+        color: $text-alt;
+        font-size: rem(16);
+        margin-bottom: rem(36);
+    }
+
+    .legend__item {
+        display: inline-block;
+        margin-right: rem(20);
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    .legend__color {
+        display: inline-block;
+        height: rem(28);
+        vertical-align: middle;
+        width: rem(28);
+
+        @include bp(48em) {
+            height: rem(15);
+            width: rem(15);
+        }
+    }
+
+    .legend__text {
+        display: inline-block;
+        line-height: rem(28);
+        margin-left: rem(6);
+        vertical-align: middle;
+    }
+}

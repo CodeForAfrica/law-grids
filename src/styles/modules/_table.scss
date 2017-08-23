@@ -1,0 +1,113 @@
+.law {
+
+    .table {
+        border-collapse: separate;
+        color: $text;
+        float: left;
+        margin: rem(100) rem(100) 0 0;
+
+        @include bp(48em) {
+            float: none;
+            margin-right: 0;
+        }
+    }
+
+    .table__head-cell {
+        position: relative;
+
+        &.highlight {
+            color: black;
+        }
+    }
+
+    .table__head {
+        bottom: 0;
+        display: block;
+        position: absolute;
+        transform: translate(30px, -10px) rotate(-45deg);
+        transform-origin: bottom left;
+        white-space: nowrap;
+
+        @include bp(48em) {
+            transform: translate(15px, -5px) rotate(-45deg);
+        }
+    }
+
+    .table__country-cell, .table__data-cell {
+        height: rem(50);
+        line-height: rem(50);
+
+        @include bp(48em) {
+            height: rem(30);
+            line-height: rem(30);
+        }
+    }
+
+    .table__country-cell {
+        padding-left: rem(5);
+        padding-right: rem(10);
+    }
+
+    .table__color-cell {
+        display: block;
+        height: rem(50);
+        margin: 0 rem(1);
+        transition: opacity 350ms;
+        width: rem(58);
+
+        @include bp(48em) {
+            height: rem(30);
+            width: rem(20);
+        }
+    }
+
+    .table__data-cell {
+        backface-visibility: hidden;
+        border-bottom: 2px double transparent;
+        border-top: 2px double transparent;
+        text-indent: -1000px;
+        width: rem(60);
+
+        @include bp(48em) {
+            width: rem(22);
+        }
+
+        &.fade {
+            .table__color-cell {
+                opacity: 0.5;    
+            }
+        }
+
+        &:nth-child(2) {
+            border-left: 2px solid transparent;
+        }
+
+        &:last-child {
+            border-right: 2px solid transparent;
+        }
+    }
+
+    .table__row {
+        &:hover {
+            cursor: pointer;
+
+            .table__data-cell {
+                border-bottom-color: black;
+                border-top-color: black;
+            }
+
+            td {
+                color: black;
+            }
+
+            td:nth-child(2) {
+                border-left-color: black;
+            }
+
+            td:last-child {
+                border-right-color: black;
+            }
+        }
+    }
+
+}
