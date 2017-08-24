@@ -10,7 +10,6 @@ class LawChart {
         this.colors = null
         this.categories = null
         this.$info = null
-        this.stripeColour = null
         this.$container = $container
         this.$rhs = null
         this.$cells = null
@@ -80,7 +79,6 @@ class LawChart {
     }
 
     renderTable() {
-        this.stripeColour = this.colors.filter(color => parseFloat(color.value) === 0.5)[0].colour
         const table = `
             <table class="table">
                 <thead>
@@ -97,8 +95,8 @@ class LawChart {
                             <td class="table__country-cell">${country.country}</td>
                             ${this.categories.map(category => 
                                 `<td class="table__data-cell"><span class="table__color-cell" style="background: ${
-                                    country[category] === '0.5*' ?
-                                        `repeating-linear-gradient(-45deg,${this.stripeColour},${this.stripeColour} 10px,transparent 10px,transparent 20px)` :
+                                    country[category].indexOf('*') >= 0 ?
+                                        `repeating-linear-gradient(-45deg,${this.colors.filter(color => parseFloat(color.value) === parseFloat(country[category]))[0].colour },${this.colors.filter(color => parseFloat(color.value) === parseFloat(country[category]))[0].colour } 10px,transparent 10px,transparent 20px)` :
                                         this.colors.filter(color => parseFloat(color.value) === parseFloat(country[category]))[0].colour                                    
                                 };">${country[category]}</span></td>`
                             ).join('')}
@@ -142,7 +140,7 @@ class LawChart {
     setupEventHandlers() {
         if (window.matchMedia('(min-width: 48em)').matches) {
             this.mobile = false 
-            
+
             this.$cells.on('mouseover.law', (e) => {
                 const $cell = $(e.currentTarget)
                 const index = $cell.index()
@@ -187,23 +185,25 @@ class LawChart {
         const annotations = this.annotations.filter((row) => row.country === country)[0]
         const locationString = '<location>'
         const categoryString = '<category>'
-        const info = `
+        let info = `
             <div class="info__wrapper">
                 <a class="info__back"><span class="info__back-img"></span><span class="visuallyhidden">Back</span></a>
                 <div class="info__content">
-                    <h2 class="info__title">${country}</h2>
-                    ${this.categories.map((category, i) => 
-                        `<div class="info__entry ${i === index - 1? 'active' : ''}">
-                            <span class="info__color" style="background: ${data[category] === '0.5*' ?
-                                `repeating-linear-gradient(-45deg,${this.stripeColour},${this.stripeColour} 10px,transparent 10px,transparent 20px)` :
-                                this.colors.filter(color => parseFloat(color.value) === parseFloat(data[category]))[0].colour
-                            }"></span>
-                            <span class="info__text"><span class="info__highlight">${category.toTitleCase()}</span> ${annotations[category].replace(locationString, country).replace(categoryString, category)}</span>
-                        </div>`
-                    ).join('')}
-                </div>
-            </div>
-        `
+                    <h2 class="info__title">${country}</h2>`
+
+
+        this.categories.map((category, i) => 
+            const bgColour = this.colors.filter(color => parseFloat(color.value) === parseFloat(data[category]))[0].colour
+            info += `<div class="info__entry ${i === index - 1 ? 'active' : ''}">
+                        <span class="info__color" style="background: ${data[category].indexOf('*') >= 0 ?
+                            `repeating-linear-gradient(-45deg,${bgColour},${bgColour} 10px,transparent 10px,transparent 20px)` :
+                            bgColour
+                        }"></span>
+                    <span class="info__text"><span class="info__highlight">${category.toTitleCase()}</span> ${annotations[category].replace(locationString, country).replace(categoryString, category)}</span>
+                </div>`
+        ).join('')
+                
+        info += '</div></div>'
 
         this.$info.html(info)
     }
