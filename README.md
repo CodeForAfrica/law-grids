@@ -8,8 +8,8 @@ Law grids is a tool that generates an interactive grid of relationships.
 <div class="law" 
     data-title='Chart title'>
 </div>
-<script src="https://cdn.jsdelivr.net/gh/CodeForAfrica/law-grids/dist/javascript/law-chart.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/CodeForAfrica/law-grids/dist/css/index.css" />
+<script src="https://cdn.jsdelivr.net/gh/CodeForAfrica/law-grids@1.0/dist/javascript/law-chart.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/CodeForAfrica/law-grids@1.0/dist/css/index.css" />
 ```
 
 ![law-grids-screenshot](https://user-images.githubusercontent.com/1282239/29664343-2e5b7d6a-88c7-11e7-95ec-bc6e9241daa4.png)
