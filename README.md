@@ -31,7 +31,7 @@ A string containing the title of the law grid. If there is no `<h1>` tag on the 
 data-title='Chart title'
 ```
 
-The rest of the configuration is controlled through three CSV files: `annotations.csv`, `colors.csv` and `matrix.csv`.
+The rest of the configuration is controlled through three CSV files: `annotations.csv`, `colors.csv` and `matrix.csv`. These should be placed in a root folder named `data`.
 
 ![law-grids-screenshot](https://user-images.githubusercontent.com/1282239/29664345-2e605b82-88c7-11e7-90a4-deb1a5150dcb.png)
 ![law-grids-screenshot](https://user-images.githubusercontent.com/1282239/29664342-2e588952-88c7-11e7-8f3a-96909f75e9e2.png)
